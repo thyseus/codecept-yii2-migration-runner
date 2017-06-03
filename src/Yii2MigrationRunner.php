@@ -8,6 +8,7 @@
 namespace Codeception\Extension;
 
 use Codeception\Exception\ExtensionException;
+use Codeception\Lib\Driver\Db as Driver;
 
 /**
  * Class Yii2MigrationRunner
@@ -20,18 +21,30 @@ class Yii2MigrationRunner extends \Codeception\Platform\Extension
         'dumpTarget'=> '../_data/dump.sql',
         'password'  => 'root',
         'user'      => 'root',
-        'tempSchema'=> 'yii2-starter-kit-temp',
+        'tempSchema'=> null,
+        'defaultEncoding' => 'DEFAULT CHARACTER SET utf8',
         'command'   => [
-            'php ./tests/codeception/bin/yii migration/up --interactive=0'
+            'php ./tests/codeception/bin/yii app/setup --interactive=0',
+            'php ./tests/codeception/bin/yii migration --interactive=0',
+            'php ./tests/codeception/bin/yii rbac-migration --interactive=0',
         ]
     ];
 
     /**
-     * Original database creditials including schema name.
-     *
+     * Database Host
+     * @var
+     */
+    public $dbh;
+
+    /**
+     * @var \Codeception\Lib\Driver\Db
+     */
+    public $driver;
+
+    /**
      * @var string
      */
-    private $originalDBCredentials = null;
+    protected $sql = null;
 
     /**
      * @var array
@@ -47,6 +60,8 @@ class Yii2MigrationRunner extends \Codeception\Platform\Extension
      */
     public function __construct($config, $options)
     {
+        $this->defaultConfig['tempSchema'] = 'yii2-starter-kit-' . time();
+
         parent::__construct($config, $options);
     }
 
@@ -58,23 +73,75 @@ class Yii2MigrationRunner extends \Codeception\Platform\Extension
      */
     public function suiteInit(\Codeception\Event\SuiteEvent $e)
     {
+        echo 'asdf';exit(1);
+        $this->connect();
+
+        $this->createSchema();
+
+        foreach ($this->defaultConfig['command'] as $key => $command) {
+            exec($command);
+        }
+
+        $this->dropDatabase();
     }
 
     /**
-     * Run the migrations defined in the extensions config
+     * @source \Codeception\Module\Db->connection()
      */
-    private function executeCommand()
+    private function connect()
     {
+        try {
+            $this->driver = Driver::create($this->config['dsn'], $this->config['user'], $this->config['password']);
+        } catch (\PDOException $e) {
+            $message = $e->getMessage();
+            if ($message === 'could not find driver') {
+                list ($missingDriver, ) = explode(':', $this->config['dsn'], 2);
+                $message = "could not find $missingDriver driver";
+            }
 
+            throw new ExtensionException(__CLASS__, $message . ' while creating PDO connection');
+        }
+
+        $this->dbh = $this->driver->getDbh();
     }
 
-    private function createTempDSN()
+    /**
+     *
+     */
+    private function createSchema()
     {
-
+        $this->sql = "CREATE SCHEMA " . $this->defaultConfig['tempSchema'] . " " . !isset($this->defaultConfig['defaultEncoding'])
+            ? " DEFAULT CHARACTER SET utf8"
+            : (string)$this->defaultConfig['defaultEncoding'] . ';';
     }
 
-    private function executeDump()
+    /**
+     *
+     */
+    private function dropDatabase()
     {
+        $this->sql = "DROP DATABASE " . $this->defaultConfig['tempSchema'] . " " . !isset($this->defaultConfig['defaultEncoding'])
+            ? " DEFAULT CHARACTER SET utf8"
+            : (string)$this->defaultConfig['defaultEncoding'] . ';';
+        $this->execCommand();
+    }
 
+    /**
+     *
+     */
+    private function execCommand()
+    {
+        if (!$this->sql) {
+            return;
+        }
+
+        try {
+            $this->driver->load($this->sql);
+        } catch (\PDOException $e) {
+            throw new \PDOException(
+                __CLASS__,
+                $e->getMessage() . "\nSQL query being executed: " . $this->driver->sqlToRun
+            );
+        }
     }
 }
