@@ -7,14 +7,14 @@
       "role": "Developer"
     }
   ],
-  "description": "Yii2 migration runner for Codeception.",
+  "description": "Codeception extension for running Yii2 migrations.",
   "keywords": [
     "codeception",
     "extension",
     "yii2"
   ],
   "license": "BSD-3-Clause",
-  "name": "davidjeddy/codeception-yii2-hello-module",
+  "name": "davidjeddy/codeception-yii2-migration-runner",
   "autoload": {
     "psr-4": {
       "Codeception\\Extension\\": "src"
@@ -25,8 +25,8 @@
     "codeception/codeception": "^2"
   },
   "support": {
-    "issues": "https://github.com/davidjeddy/codeception-yii2-hello-module/issues?state=open",
-    "source": "https://github.com/davidjeddy/codeception-yii2-hello-module/issues"
+    "issues": "https://github.com/davidjeddy/codeception-yii2-migration-runner/issues?state=open",
+    "source": "https://github.com/davidjeddy/codeception-yii2-migration-runner"
   },
   "type": "library"
 }
