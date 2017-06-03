@@ -1,6 +1,8 @@
 # codecept-yii2-migration-runner
 
-Module to interface with a FreeRADIUS server
+Codeception extension that will run Yii2 migration commands and provide the output as a dump file. This is typically then
+picked up  by the Codeception Db extension and loaded before each test is executed. This, however, only runs during the
+`codeception build` process.
 
 # Badges
 [![Lahello Stable Version](https://poser.pugx.org/davidjeddy/codecept-yii2-migration-runner/v/stable?format=flat-square)](https://packagist.org/packages/davidjeddy/codecept-yii2-migration-runner)
@@ -21,7 +23,7 @@ Composer
 
 Codeception
 
-[Any relatiomal database supported by Yii2](http://www.yiiframework.com/doc-2.0/guide-db-dao.html)
+mysqldump compatible SQl client
 
 Important: You must have creditials for a user with permission to create a database schema.
 
