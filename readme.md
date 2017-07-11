@@ -1,10 +1,10 @@
-# codecept-yii2-migration-runner
+# Yii2 / Codeception Migration Runner
 
 Codeception extension that will run Yii2 migration commands and provide the output as a dump file. This is typically then
-picked up  by the Codeception Db extension and loaded before each test is executed. This, however, only runs during the
-`codeception build` process.
+picked up  by the Codeception Db extension and loaded before each test is executed. The migration output, however, is only
+runs during the `codeception build` execution.
 
-# Badges
+# BADGES
 [![Lahello Stable Version](https://poser.pugx.org/davidjeddy/codecept-yii2-migration-runner/v/stable?format=flat-square)](https://packagist.org/packages/davidjeddy/codecept-yii2-migration-runner)
 [![Total Downloads](https://poser.pugx.org/davidjeddy/codecept-yii2-migration-runner/downloads)](https://packagist.org/packages/davidjeddy/codecept-yii2-migration-runner)
 [![Lahello Unstable Version](https://poser.pugx.org/davidjeddy/codecept-yii2-migration-runner/v/unstable?format=flat-square)](https://packagist.org/packages/davidjeddy/codecept-yii2-migration-runner)
@@ -17,13 +17,13 @@ picked up  by the Codeception Db extension and loaded before each test is execut
 
 # REQUIREMENTS
 
-PHP 5.6+
+[PHP 5.6+](http://php.net/)
 
-Composer
+[Composer](https://getcomposer.org/)
 
-Codeception
+[Codeception 2.3+](http://codeception.com/)
 
-Codeception Db module configured in *.suite.yml
+[Usage of Codeception's Database module](http://codeception.com/docs/modules/Db)
 
 Important: You must have creditials for a user with permission to create a database schema.
 
@@ -40,4 +40,4 @@ Edit codeception.yml adding the migration commands
 
  - Recreate a database scheme named `{TEST_DB_SCHEMA}-remigrate`.
  - Execute the Codeception build command.
- - Run Codecpetion test suite.
+ - Run Codeception test suite.
