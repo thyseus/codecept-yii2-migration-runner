@@ -18,15 +18,10 @@ use Codeception\Extension;
  */
 class Yii2MigrationRunner extends Extension
 {
-    protected $config = [
-        'charset'   => 'utf8',
-        'dsn'       => 'mysql:host=db;port=3306;dbname=yii2-starter-kit-test',
-        'dumpTarget'=> '../_data/dump.sql',
-        'password'  => 'root',
-        'user'      => 'root',
-        'dbname'    => 'yii2-starter-kit-test',
-        'command'   => 'php ./tests/codeception/bin/yii app/setup --interactive=0'
-    ];
+    /**
+     * @var null
+     */
+    protected $config = null;
 
     /**
      * @var \Codeception\Lib\Driver\Db
@@ -49,6 +44,17 @@ class Yii2MigrationRunner extends Extension
     public static $events = [
         Events::SUITE_BEFORE => 'suiteBefore'
     ];
+
+    /**
+     * Yii2MigrationRunner constructor.
+     * @param $config
+     * @param $options
+     */
+    public function __construct($config, $options)
+    {
+        $this->config = \Yii::$app->components['db'];
+        parent::__construct($config, $options);
+    }
 
     /**
      * This is what runs the Yii2 migration command(s); remember we hijack the DSN connection so to direct the output

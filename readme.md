@@ -23,7 +23,7 @@ Composer
 
 Codeception
 
-mysqldump compatible SQl client
+Codeception Db module configured in *.suite.yml
 
 Important: You must have creditials for a user with permission to create a database schema.
 
@@ -34,27 +34,10 @@ Important: You must have creditials for a user with permission to create a datab
 
 # CONFIGURATION
 
-Edit Codeception test suite with database creditials and DSN
-
-```
-class_name: AcceptanceTester
-...
-modules:
-    enabled:
-        ...
-        - Yii2MigrationRunner
-        ...
-    config:
-        ...
-        Yii2MigrationRunner:
-            additional: 'rbac-migration'
-            dsn: mysql:host=db;port=3306;dbname=yii2-starter-kit-test
-            dump: ../_data/dump.sql
-            password: root
-            user: root
-        ...
-```
+Edit codeception.yml adding the migration commands
 
 # USAGE
-Run Codeception. The module will execute the given list of migration commands, dump the database, and store the results
-where 'dump' tells it to.
+
+ - Recreate a database scheme named `{TEST_DB_SCHEMA}-remigrate`.
+ - Execute the Codeception build command.
+ - Run Codecpetion test suite.
