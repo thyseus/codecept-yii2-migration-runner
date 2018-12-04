@@ -29,8 +29,8 @@ Important: You must have creditials for a user with permission to create a datab
 
 # INSTALLATION
  + `cd {project root}`
- + Run `composer require davidjeddy/codecept-yii2-migration-runner` in terminal
-     + OR add `"davidjeddy/codecept-yii2-migration-runner": "dev-master@dev"` to your project's  `composer.json`, then run `composer update`.
+ + Run `composer require davidjeddy/codeception-yii2-migration-runner` in terminal
+     + OR add `"davidjeddy/codeception-yii2-migration-runner": "dev-master@dev"` to your project's  `composer.json`, then run `composer update`.
 
 # CONFIGURATION
 
